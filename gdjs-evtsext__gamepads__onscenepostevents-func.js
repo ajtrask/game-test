@@ -11,21 +11,25 @@ gdjs.evtsExt__Gamepads__onScenePostEvents.conditionTrue_0 = {val:false};
 gdjs.evtsExt__Gamepads__onScenePostEvents.condition0IsTrue_0 = {val:false};
 
 
-gdjs.evtsExt__Gamepads__onScenePostEvents.userFunc0x9aedc8 = function(runtimeScene, eventsFunctionContext) {
+gdjs.evtsExt__Gamepads__onScenePostEvents.userFunc0xc35a28 = function(runtimeScene, eventsFunctionContext) {
 "use strict";
 //Each time a player press a button i save the last button pressed for the next frame
 /** @type {Gamepad[]} */
-var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
+const gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
 
 //Get function parameter
 let countPlayers = Object.keys(gdjs._extensionController.players).length;
 
 //Repeat for each players
-for (var i = 0; i < countPlayers; i++) {
-    var gamepad = gamepads[i]; // Get the gamepad of the player
-    if (gamepad == null) return;
+for (let i = 0; i < countPlayers; i++) {
+    let gamepad = gamepads[i]; // Get the gamepad of the player
 
-    for (var b = 0; b < Object.keys(gamepad.buttons).length; b++) { //For each buttons
+    //we need keep this condition because when use have not yet plug her controller we can't get the controller in the gamepad variable.
+    if (gamepad == null) {
+        return;
+    }
+
+    for (let b = 0; b < Object.keys(gamepad.buttons).length; b++) { //For each buttons
         if (gamepad.buttons[b].pressed) { //One of them is pressed
             gdjs._extensionController.players[i].lastButtonUsed = b; //Save the button pressed
 
@@ -52,7 +56,7 @@ gdjs.evtsExt__Gamepads__onScenePostEvents.eventsList0 = function(runtimeScene, e
 {
 
 
-gdjs.evtsExt__Gamepads__onScenePostEvents.userFunc0x9aedc8(runtimeScene, typeof eventsFunctionContext !== 'undefined' ? eventsFunctionContext : undefined);
+gdjs.evtsExt__Gamepads__onScenePostEvents.userFunc0xc35a28(runtimeScene, typeof eventsFunctionContext !== 'undefined' ? eventsFunctionContext : undefined);
 
 }
 

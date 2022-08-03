@@ -11,10 +11,10 @@ gdjs.evtsExt__Gamepads__C_Axis_pushed.conditionTrue_0 = {val:false};
 gdjs.evtsExt__Gamepads__C_Axis_pushed.condition0IsTrue_0 = {val:false};
 
 
-gdjs.evtsExt__Gamepads__C_Axis_pushed.userFunc0xb36f68 = function(runtimeScene, eventsFunctionContext) {
+gdjs.evtsExt__Gamepads__C_Axis_pushed.userFunc0xc35a28 = function(runtimeScene, eventsFunctionContext) {
 "use strict";
 /** @type {Gamepad[]} */
-var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
+const gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
 
 //Get function parameters
 const playerId = eventsFunctionContext.getArgument("player_ID") - 1;
@@ -26,16 +26,22 @@ if (playerId < 0 || playerId > 4) {
     return;
 }
 if (stick != "LEFT" && stick != "RIGHT") {
-    console.error('Parameter stick in action: "Gamepad stick pushed (axis)", is not valid, must be LEFT or RIGHT');
+    console.error('Parameter stick in condition: "Gamepad stick pushed (axis)", is not valid, must be LEFT or RIGHT');
     return;
 }
 if (direction != "UP" && direction != "DOWN" && direction != "LEFT" && direction != "RIGHT") {
-    console.error('Parameter deadzone in action: "Gamepad stick pushed (axis)", is not valid, must be UP, DOWN, LEFT or RIGHT');
+    console.error('Parameter deadzone in condition: "Gamepad stick pushed (axis)", is not valid, must be UP, DOWN, LEFT or RIGHT');
     return;
 }
 
-var gamepad = gamepads[playerId];
-if (gamepad == null) return;
+const gamepad = gamepads[playerId];
+
+//we need keep this condition because when use have not yet plug her controller we can't get the controller in the gamepad variable.
+if (gamepad == null) {
+    eventsFunctionContext.returnValue = false;
+    return;
+}
+
 
 //Define in onFirstSceneLoaded function
 const getNormalizedAxisValue = gdjs._extensionController.getNormalizedAxisValue;
@@ -72,6 +78,8 @@ switch (stick) {
                 break;
 
             default:
+                console.error('The value Direction on stick Left on the condition: "Gamepad stick pushed (axis)" is not valid.');
+                eventsFunctionContext.returnValue = false;
                 break;
         }
         break;
@@ -107,11 +115,15 @@ switch (stick) {
                 break;
 
             default:
+                console.error('The value Direction on stick Right on the condition: "Gamepad stick pushed (axis)" is not valid.');
+                eventsFunctionContext.returnValue = false;
                 break;
         }
         break;
 
     default:
+        console.error('The value Stick on the condition: "Gamepad stick pushed (axis)" is not valid.');
+        eventsFunctionContext.returnValue = false;
         break;
 }
 
@@ -123,7 +135,7 @@ gdjs.evtsExt__Gamepads__C_Axis_pushed.eventsList0 = function(runtimeScene, event
 {
 
 
-gdjs.evtsExt__Gamepads__C_Axis_pushed.userFunc0xb36f68(runtimeScene, typeof eventsFunctionContext !== 'undefined' ? eventsFunctionContext : undefined);
+gdjs.evtsExt__Gamepads__C_Axis_pushed.userFunc0xc35a28(runtimeScene, typeof eventsFunctionContext !== 'undefined' ? eventsFunctionContext : undefined);
 
 }
 

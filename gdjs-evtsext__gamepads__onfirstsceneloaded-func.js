@@ -11,7 +11,7 @@ gdjs.evtsExt__Gamepads__onFirstSceneLoaded.conditionTrue_0 = {val:false};
 gdjs.evtsExt__Gamepads__onFirstSceneLoaded.condition0IsTrue_0 = {val:false};
 
 
-gdjs.evtsExt__Gamepads__onFirstSceneLoaded.userFunc0x9aedc8 = function(runtimeScene, eventsFunctionContext) {
+gdjs.evtsExt__Gamepads__onFirstSceneLoaded.userFunc0xc35a28 = function(runtimeScene, eventsFunctionContext) {
 "use strict";
 //Define an new private object javascript for the gamepad extension
 gdjs._extensionController = {
@@ -75,9 +75,16 @@ gdjs._extensionController.getInputString = function (type, buttonId) {
 }
 
 gdjs._extensionController.axisToAngle = function (deltaX, deltaY) {
-    var rad = Math.atan2(deltaY, deltaX);
-    var deg = rad * (180 / Math.PI);
+    const rad = Math.atan2(deltaY, deltaX);
+    const deg = rad * (180 / Math.PI);
     return deg;
+}
+
+gdjs._extensionController.isXbox = function (gamepad) {
+    return (gamepad ? (
+        gamepad.id.toUpperCase().indexOf("XBOX") !== -1 ||
+        gamepad.id.toUpperCase().indexOf("XINPUT") !== -1
+    ) : false);
 }
 
 //Returns the new value taking into account the dead zone for the player_ID given
@@ -85,7 +92,7 @@ gdjs._extensionController.getNormalizedAxisValue = function (v, player_ID) {
     //    gdjs._extensionController = gdjs._extensionController || { deadzone: 0.2 };
 
     // Anything smaller than this is assumed to be 0,0
-    var DEADZONE = gdjs._extensionController.players[player_ID].deadzone;
+    const DEADZONE = gdjs._extensionController.players[player_ID].deadzone;
 
     if (Math.abs(v) < DEADZONE) {
         // In the dead zone, set to 0
@@ -133,7 +140,7 @@ gdjs.evtsExt__Gamepads__onFirstSceneLoaded.eventsList0 = function(runtimeScene, 
 {
 
 
-gdjs.evtsExt__Gamepads__onFirstSceneLoaded.userFunc0x9aedc8(runtimeScene, typeof eventsFunctionContext !== 'undefined' ? eventsFunctionContext : undefined);
+gdjs.evtsExt__Gamepads__onFirstSceneLoaded.userFunc0xc35a28(runtimeScene, typeof eventsFunctionContext !== 'undefined' ? eventsFunctionContext : undefined);
 
 }
 
